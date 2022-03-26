@@ -7,7 +7,7 @@ Type=idle
 User=root
 Restart=on-failure
 RestartSec=60s
-ExecStart=python /home/pi/lab1_server.py 80
+ExecStart=python /home/pi/website/webserver.py 80
 
 [Install]
 WantedBy=multi-user.target
