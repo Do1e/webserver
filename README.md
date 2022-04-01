@@ -7,7 +7,8 @@
 * *ls_site.py*用于生成*index.html*，可在`crontab -e`中添加定时执行任务自动更新*index.html*。（本人不太会前端，可自行更改*ls_site.py*的内容）
 
 ## Notes
-* 包含中文的内容需使用gbk编码，否则会出现乱码。
+* ~~包含中文的内容需使用gbk编码，否则会出现乱码~~。
+* html文件新增一行自动解析编码，更新为utf-8编码。
 
 ## References
 * 404页面引用自[yansheng836/404pages](https://github.com/yansheng836/404pages)和[ganlvtech/phaser-catch-the-cat](https://github.com/ganlvtech/phaser-catch-the-cat)。

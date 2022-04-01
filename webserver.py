@@ -2,6 +2,7 @@ import sys
 from socket import *
 from threading import Thread
 from time import time, localtime, strftime
+import os
 import urllib.parse
 sitepath = "./site"
 fp = open("./site.log", "a")
@@ -15,6 +16,11 @@ def serverfun(conn, addr):
             filename += "index.html"
         filename = sitepath + filename
         filename = urllib.parse.unquote(filename)  # 中文网页支持
+        if(os.path.isdir(filename)):
+            if(filename[-1] == "/"):
+                filename += "index.html"
+            else:
+                filename += "/index.html"
         fp.write("visit file: " + filename + "\n")
         fp.flush()
         f = open(filename, "rb")
