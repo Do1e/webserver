@@ -9,6 +9,3 @@
 ## Notes
 * ~~包含中文的内容需使用gbk编码，否则会出现乱码~~。
 * html文件新增一行自动解析编码，更新为utf-8编码。
-
-## References
-* 404页面引用自[yansheng836/404pages](https://github.com/yansheng836/404pages)和[ganlvtech/phaser-catch-the-cat](https://github.com/ganlvtech/phaser-catch-the-cat)。
