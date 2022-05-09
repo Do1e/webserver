@@ -4,7 +4,10 @@ from threading import Thread
 from time import time, localtime, strftime
 import os
 import urllib.parse
-sitepath = "./site"
+from ls_site import lsSite
+
+sitepath = sys.argv[2]          # 网页根目录
+cTime = 0                       # 上次修改时间
 fp = open("./site.log", "a")
 
 # 线程函数
@@ -14,6 +17,12 @@ def serverfun(conn, addr):
         filename = message.split()[1]
         if(filename[-1] == "/"):  # 访问根目录重定向为index.html
             filename += "index.html"
+        global cTime
+        if(filename[-10:] == "index.html" and cTime < os.path.getctime(sitepath)):
+            cTime = os.path.getctime(sitepath)
+            ls = lsSite(sitepath)
+            ls.run()
+            fp.write(strftime('%Y-%m-%d %H:%M:%S', localtime(time())) + " list file\n")
         filename = sitepath + filename
         filename = urllib.parse.unquote(filename)  # 中文网页支持
         if(os.path.isdir(filename)):
@@ -53,22 +62,22 @@ def serverfun(conn, addr):
     except IndexError:
         fp.write(strftime('%Y-%m-%d %H:%M:%S', localtime(time())) + " indexError - " + str(message) + "\n")
 
-
-serverSocket = socket(AF_INET, SOCK_STREAM)
-serverSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)  # 停止之后不占用端口，可以立即重用
-serverSocket.bind(('', int(sys.argv[1])))             # 监听端口(注：HTTP默认端口为80，HTTPS默认端口为443)
-serverSocket.listen(10)         # 最大连接数10
-fp.write(strftime('%Y-%m-%d %H:%M:%S', localtime(time())) + " server start" + "\n")
-fp.flush()
-while True:
-    try:
-        connectionSocket, addr = serverSocket.accept()
-        fp.write(strftime('%Y-%m-%d %H:%M:%S', localtime(time())) + " connect - " + str(addr) + "\n")
-        fp.flush()
-        t = Thread(target=serverfun, args=(connectionSocket, addr))
-        t.start()    # 有新的连接时创建一个新的线程
-    except KeyboardInterrupt:   # 捕获Ctrl+C，关闭服务器
-        fp.write(strftime('%Y-%m-%d %H:%M:%S', localtime(time())) + " server close" + "\n\n")
-        fp.flush()
-        serverSocket.close()
-        fp.close()
+if __name__ == "__main__":
+    serverSocket = socket(AF_INET, SOCK_STREAM)
+    serverSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)  # 停止之后不占用端口，可以立即重用
+    serverSocket.bind(('', int(sys.argv[1])))             # 监听端口(注：HTTP默认端口为80)
+    serverSocket.listen(10)         # 最大连接数10
+    fp.write(strftime('%Y-%m-%d %H:%M:%S', localtime(time())) + " server start" + "\n")
+    fp.flush()
+    while True:
+        try:
+            connectionSocket, addr = serverSocket.accept()
+            fp.write(strftime('%Y-%m-%d %H:%M:%S', localtime(time())) + " connect - " + str(addr) + "\n")
+            fp.flush()
+            t = Thread(target=serverfun, args=(connectionSocket, addr))
+            t.start()    # 有新的连接时创建一个新的线程
+        except KeyboardInterrupt:   # 捕获Ctrl+C，关闭服务器
+            fp.write(strftime('%Y-%m-%d %H:%M:%S', localtime(time())) + " server close" + "\n\n")
+            fp.flush()
+            serverSocket.close()
+            fp.close()
