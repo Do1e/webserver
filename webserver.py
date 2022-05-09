@@ -8,7 +8,7 @@ from ls_site import lsSite
 
 sitepath = sys.argv[2]          # 网页根目录
 cTime = 0                       # 上次修改时间
-fp = open("./site.log", "a")
+fp = open(os.path.join(sitepath, "..", "site.log"), "a")
 
 # 线程函数
 def serverfun(conn, addr):
