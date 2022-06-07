@@ -1,4 +1,7 @@
 # webserver
+<center>
+<a href="https://wakatime.com/badge/user/d2554b48-8dde-4338-baba-1882d2f860ec/project/18742105-7d12-4209-81f7-a47dd6883518"><img src="https://wakatime.com/badge/user/d2554b48-8dde-4338-baba-1882d2f860ec/project/18742105-7d12-4209-81f7-a47dd6883518.svg" alt="wakatime"></a>
+</center>
 
 ## Usage
 * `python webserver.py [port] [/path/to/web/root]`
